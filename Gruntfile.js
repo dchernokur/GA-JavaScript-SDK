@@ -22,6 +22,15 @@ module.exports = function (grunt) {
                 }
             }
         },
+        concat: {
+            dist: {
+                src: [
+                    'dist/GaJavaScriptSdk.js',
+                    'exports.banner.js'
+                ],
+                dest: 'dist/GaJavaScriptSdk.js'
+            }
+        },
         typescript: {
             build: {
                 src: [
@@ -76,11 +85,12 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-banner');
 
-    grunt.registerTask('dist', ['clean', 'typescript', 'uglify', 'usebanner']);
+    grunt.registerTask('dist', ['clean', 'typescript', 'concat', 'uglify', 'usebanner']);
     grunt.registerTask('dev', ['watch']);
 };

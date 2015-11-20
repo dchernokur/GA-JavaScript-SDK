@@ -3,7 +3,7 @@
  * Unofficial JavaScript SDK for GameAnalytics, REST API v2 version
  *
  * Gembly BV
- * Build at 20-11-2015
+ * Build at 17-12-2015
  * Released under GNUv3 License 
  */
 
@@ -628,4 +628,4 @@ var GA;
         }
         Utils.createUniqueId = createUniqueId;
     }(Utils = GA.Utils || (GA.Utils = {}));
-}(GA || (GA = {}));
+}(GA || (GA = {})), "undefined" != typeof module && (module.exports = GA);

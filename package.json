@@ -19,6 +19,7 @@
       "url": "https://raw.githubusercontent.com/gembly/GA-JavaScript-SDK/master/LICENSE"
     }
   ],
+  "main": "./dist/GaJavaScriptSdk.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gembly/GA-JavaScript-SDK"
@@ -27,6 +28,7 @@
     "grunt": "0.4.x",
     "grunt-banner": "0.5.0",
     "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-uglify": "0.7.0",
     "grunt-contrib-watch": "0.6.x",
     "grunt-typescript": "0.4.x",
