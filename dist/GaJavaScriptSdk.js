@@ -412,7 +412,8 @@ var GA;
     var GameAnalytics = function() {
         function GameAnalytics() {
             this.sessionId = GA.Utils.createUniqueId(), this.messageQueue = new GA.Utils.MessageQueue(), 
-            this.enabled = !1, this.initProcessed = !1, this.timeoutId = 0, this.timeOffset = 0;
+            this.dataSentCallback = null, this.enabled = !1, this.initProcessed = !1, this.timeoutId = 0, 
+            this.timeOffset = 0;
         }
         return GameAnalytics.prototype.init = function(gameKey, secretKey, build, user) {
             var _this = this;
@@ -428,7 +429,10 @@ var GA;
             if (null === GameAnalytics.instance) throw new Error("No instance available!");
             var m = new GA.Utils.Message(event, GA.Utils.getDefaultAnnotations(this.user, this.sessionId, this.build, this.timeOffset));
             return this.messageQueue.push(m), this;
+        }, GameAnalytics.prototype.setDataSentCallback = function(callback) {
+            this.dataSentCallback = callback;
         }, GameAnalytics.prototype.sendData = function() {
+            var _this = this;
             if (this.initProcessed === !1) return this.scheduleSendData(1e3), this;
             if (this.enabled === !1) return this;
             if (null === GameAnalytics.instance) throw new Error("No instance available!");
@@ -441,8 +445,9 @@ var GA;
             try {
                 d = JSON.stringify(data);
             } catch (e) {}
-            return this.sendEvent(d, "events"), this.scheduleSendData(GameAnalytics.SCHEDULE_TIME), 
-            this;
+            return this.sendEvent(d, "events", function() {
+                null !== _this.dataSentCallback && _this.dataSentCallback();
+            }), this.scheduleSendData(GameAnalytics.SCHEDULE_TIME), this;
         }, GameAnalytics.prototype.scheduleSendData = function(time) {
             var _this = this;
             clearTimeout(this.timeoutId), this.timeoutId = setTimeout(function() {

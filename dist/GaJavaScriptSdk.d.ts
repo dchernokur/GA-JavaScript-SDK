@@ -315,6 +315,12 @@ declare module GA {
          */
         private messageQueue;
         /**
+         * Every sendData success callback.
+         *
+         * @type {Function|null}
+         */
+        private dataSentCallback;
+        /**
          * Used to check if events can be sent to the API, set based on the response of the init request
          *
          * @type {boolean}  events are only sendEvent of true
@@ -355,6 +361,10 @@ declare module GA {
          * @param event
          */
         addEvent(event: Events.Event): GameAnalytics;
+        /**
+         * @param {Function} callback
+         */
+        setDataSentCallback(callback: any): void;
         /**
          * Send data from the message queue
          */

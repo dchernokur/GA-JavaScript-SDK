@@ -79,6 +79,13 @@ module GA
         private messageQueue: Utils.MessageQueue = new Utils.MessageQueue();
 
         /**
+         * Every sendData success callback.
+         *
+         * @type {Function|null}
+         */
+        private dataSentCallback: () => {} = null;
+
+        /**
          * Used to check if events can be sent to the API, set based on the response of the init request
          *
          * @type {boolean}  events are only sendEvent of true
@@ -165,6 +172,13 @@ module GA
         }
 
         /**
+         * @param {Function} callback
+         */
+        public setDataSentCallback(callback) {
+            this.dataSentCallback = callback;
+        }
+
+        /**
          * Send data from the message queue
          */
         public sendData(): GameAnalytics
@@ -201,7 +215,13 @@ module GA
                 d = JSON.stringify(data);
             } catch (e) {}
 
-            this.sendEvent(d, 'events');
+            this.sendEvent(d, 'events', () => {
+                if (null === this.dataSentCallback) {
+                    return;
+                }
+
+                this.dataSentCallback();
+            });
 
             //Reschedule this method
             this.scheduleSendData(GameAnalytics.SCHEDULE_TIME);

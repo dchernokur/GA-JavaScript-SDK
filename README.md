@@ -61,6 +61,12 @@ It is possible to drain the queue yourself, by using the sendData() method.
 GA.getInstance().sendData();
 ```
 
+If you want to handle every success response after `sendData`, use `setDataSentCallback`.
+
+ ```javascript
+ GA.getInstance().setDataSentCallback(callback);
+ ```
+
 Events
 ------
 
