@@ -122,7 +122,7 @@ module GA
                 os_version: 'unknown'
             };
 
-            //@TODO detect desktops
+            //@TODO detect desktops here and above
 
             var ua:string = navigator.userAgent;
 

@@ -509,8 +509,8 @@ var GA;
                 session_num: session_num,
                 build: build
             };
-            user.facebook_id && (obj.facebook_id = user.facebook_id), (0 === user.gender || 1 === user.gender) && (obj.gender = GA.Gender[user.gender]), 
-            user.birth_year && (obj.birth_year = user.birth_year);
+            user && (user.facebook_id && (obj.facebook_id = user.facebook_id), (0 === user.gender || 1 === user.gender) && (obj.gender = GA.Gender[user.gender]), 
+            user.birth_year && (obj.birth_year = user.birth_year));
             var ua = navigator.userAgent;
             return ua.match(/iPad|iPod|iPhone/i) ? (obj.platform = GA.Platform[0], obj.device = ua.match(/iPad|iPod|iPhone/i)[0], 
             obj.manufacturer = "Apple", obj.os_version = GA.Platform[0] + " " + ua.match(/OS (\b[0-9]+_[0-9]+(?:_[0-9]+)?\b)/)[1].replace(/_/gi, ".")) : ua.match(/Android/i) ? (obj.platform = GA.Platform[1], 
