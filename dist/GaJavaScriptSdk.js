@@ -3,7 +3,7 @@
  * Unofficial JavaScript SDK for GameAnalytics, REST API v2 version
  *
  * Gembly BV
- * Build at 17-12-2015
+ * Build at 09-02-2016
  * Released under GNUv3 License 
  */
 
@@ -411,14 +411,15 @@ var GA;
     GA.getInstance = getInstance;
     var GameAnalytics = function() {
         function GameAnalytics() {
-            this.sessionId = GA.Utils.createUniqueId(), this.messageQueue = new GA.Utils.MessageQueue(), 
+            this.sessionId = GA.Utils.createUniqueId(), this.sessionNum = 1, this.messageQueue = new GA.Utils.MessageQueue(), 
             this.dataSentCallback = null, this.enabled = !1, this.initProcessed = !1, this.timeoutId = 0, 
             this.timeOffset = 0;
         }
-        return GameAnalytics.prototype.init = function(gameKey, secretKey, build, user) {
+        return GameAnalytics.prototype.init = function(gameKey, secretKey, build, user, sessionNum) {
             var _this = this;
             if (null === GameAnalytics.instance) throw new Error("No instance available!");
-            this.gameKey = gameKey, this.secretKey = secretKey, this.build = build, this.user = user;
+            this.gameKey = gameKey, this.secretKey = secretKey, this.build = build, this.user = user, 
+            this.sessionNum = sessionNum;
             var initEvent = new GA.Events.Init(GA.Utils.getBaseAnnotations());
             return this.sendEvent(initEvent.toString(), "init", function(response) {
                 _this.initProcessed = !0, response.enabled === !0 && (_this.enabled = !0, _this.timeOffset = (Date.now() / 1e3 | 0) - response.server_ts);
@@ -427,7 +428,7 @@ var GA;
             }), this;
         }, GameAnalytics.prototype.addEvent = function(event) {
             if (null === GameAnalytics.instance) throw new Error("No instance available!");
-            var m = new GA.Utils.Message(event, GA.Utils.getDefaultAnnotations(this.user, this.sessionId, this.build, this.timeOffset));
+            var m = new GA.Utils.Message(event, GA.Utils.getDefaultAnnotations(this.user, this.sessionId, this.build, this.timeOffset, this.sessionNum));
             return this.messageQueue.push(m), this;
         }, GameAnalytics.prototype.setDataSentCallback = function(callback) {
             this.dataSentCallback = callback;
@@ -494,7 +495,7 @@ var GA;
 !function(GA) {
     var Utils;
     !function(Utils) {
-        function getDefaultAnnotations(user, session_id, build, timeOffset) {
+        function getDefaultAnnotations(user, session_id, build, timeOffset, session_num) {
             var obj = {
                 sdk_version: GA.GameAnalytics.SDK_VERSION,
                 platform: GA.Platform[2],
@@ -505,7 +506,7 @@ var GA;
                 client_ts: (Date.now() / 1e3 | 0) + timeOffset,
                 manufacturer: "unknown",
                 session_id: session_id,
-                session_num: 1,
+                session_num: session_num,
                 build: build
             };
             user.facebook_id && (obj.facebook_id = user.facebook_id), (0 === user.gender || 1 === user.gender) && (obj.gender = GA.Gender[user.gender]), 

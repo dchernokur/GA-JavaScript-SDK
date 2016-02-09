@@ -55,7 +55,7 @@ module GA
             android_id?:            string;
         }
 
-        export function getDefaultAnnotations(user: User, session_id: string, build: string, timeOffset: number): DefaultAnnotations
+        export function getDefaultAnnotations(user: User, session_id: string, build: string, timeOffset: number, session_num: number): DefaultAnnotations
         {
             var obj: DefaultAnnotations = {
                 sdk_version: GameAnalytics.SDK_VERSION,
@@ -67,7 +67,7 @@ module GA
                 client_ts: (Date.now()/ 1000 | 0) + timeOffset,
                 manufacturer: 'unknown',
                 session_id: session_id,
-                session_num: 1,
+                session_num: session_num,
                 build: build
             };
 
@@ -117,6 +117,8 @@ module GA
                 platform: 'unknown',
                 os_version: 'unknown'
             };
+
+            //@TODO detect desktops
 
             var ua:string = navigator.userAgent;
 

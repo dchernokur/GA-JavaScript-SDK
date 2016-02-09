@@ -303,11 +303,17 @@ declare module GA {
          */
         private user;
         /**
-         * The current sesison of the playing user
+         * The current sessison of the playing user
          *
          * @type {string}
          */
         private sessionId;
+        /**
+         * The current sessison number of the playing user
+         *
+         * @type {number}
+         */
+        private sessionNum;
         /**
          * Queue of messages for GameAnalytics, will be drained every 15 seconds or when a user calls sendData
          *
@@ -352,9 +358,9 @@ declare module GA {
          * @param gameKey       a Game's unique key
          * @param secretKey     secret key used to auth an message
          * @param build         The build version of your application
-         * @param userId        The id of the user
+         * @param user          The user object User.user_id
          */
-        init(gameKey: string, secretKey: string, build: string, user: User): GameAnalytics;
+        init(gameKey: string, secretKey: string, build: string, user: User, sessionNum: number): GameAnalytics;
         /**
          * Adds an event to the message queue
          *
@@ -438,7 +444,7 @@ declare module GA {
             jailbroken?: boolean;
             android_id?: string;
         }
-        function getDefaultAnnotations(user: User, session_id: string, build: string, timeOffset: number): DefaultAnnotations;
+        function getDefaultAnnotations(user: User, session_id: string, build: string, timeOffset: number, session_num: number): DefaultAnnotations;
         function getBaseAnnotations(): BaseAnnotations;
     }
 }

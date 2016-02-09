@@ -65,11 +65,18 @@ module GA
         private user: User;
 
         /**
-         * The current sesison of the playing user
+         * The current session of the playing user
          *
          * @type {string}
          */
         private sessionId: string = Utils.createUniqueId();
+
+        /**
+         * The current session number of the playing user
+         *
+         * @type {number}
+         */
+        private sessionNum: number = 1;
 
         /**
          * Queue of messages for GameAnalytics, will be drained every 15 seconds or when a user calls sendData
@@ -121,9 +128,10 @@ module GA
          * @param gameKey       a Game's unique key
          * @param secretKey     secret key used to auth an message
          * @param build         The build version of your application
-         * @param userId        The id of the user
+         * @param user          The user object User.user_id
+         * @param sessionNum    Number of current user's session
          */
-        public init(gameKey: string, secretKey: string, build: string, user: User): GameAnalytics
+        public init(gameKey: string, secretKey: string, build: string, user: User, sessionNum: number): GameAnalytics
         {
             if (null === GameAnalytics.instance) {
                 throw new Error('No instance available!');
@@ -133,6 +141,7 @@ module GA
             this.secretKey = secretKey;
             this.build = build;
             this.user = user;
+            this.sessionNum = sessionNum;
 
             var initEvent = new Events.Init(Utils.getBaseAnnotations());
             this.sendEvent(initEvent.toString(), 'init', (response: GA.Events.InitResponse) => {
@@ -148,6 +157,7 @@ module GA
 
             //Also make sure the queue is empty before we leave the page
             window.addEventListener('beforeunload', () => {
+                //@TODO this.sessionend()
                this.sendData();
             });
 
@@ -165,7 +175,8 @@ module GA
                 throw new Error('No instance available!');
             }
 
-            var m = new Utils.Message(event, Utils.getDefaultAnnotations(this.user, this.sessionId, this.build, this.timeOffset));
+            var m = new Utils.Message(event,
+                Utils.getDefaultAnnotations(this.user, this.sessionId, this.build, this.timeOffset, this.sessionNum));
             this.messageQueue.push(m);
 
             return this;
