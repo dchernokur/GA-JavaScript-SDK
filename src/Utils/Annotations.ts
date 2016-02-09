@@ -63,7 +63,7 @@ module GA
                 os_version: GA.Platform[GA.Platform.windows] + ' 8',
                 device: 'unknown',
                 v: 2,
-                user_id: user.user_id,
+                user_id: (user) ? user.user_id : window['game_user_id'],
                 client_ts: (Date.now()/ 1000 | 0) + timeOffset,
                 manufacturer: 'unknown',
                 session_id: session_id,
@@ -71,17 +71,21 @@ module GA
                 build: build
             };
 
-            if (user.facebook_id) {
-                obj.facebook_id = user.facebook_id;
+            //@TODO i still dunno why sometimes user in undefined
+            if (user) {
+                if (user.facebook_id) {
+                    obj.facebook_id = user.facebook_id;
+                }
+
+                if (user.gender === Gender.male || user.gender === Gender.female) {
+                    obj.gender = Gender[user.gender];
+                }
+
+                if (user.birth_year) {
+                    obj.birth_year = user.birth_year;
+                }
             }
 
-            if (user.gender === Gender.male || user.gender === Gender.female) {
-                obj.gender = Gender[user.gender];
-            }
-
-            if (user.birth_year) {
-                obj.birth_year = user.birth_year;
-            }
 
             var ua:string = navigator.userAgent;
 

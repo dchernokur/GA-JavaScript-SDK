@@ -502,7 +502,7 @@ var GA;
                 os_version: GA.Platform[2] + " 8",
                 device: "unknown",
                 v: 2,
-                user_id: user.user_id,
+                user_id: user ? user.user_id : window.game_user_id,
                 client_ts: (Date.now() / 1e3 | 0) + timeOffset,
                 manufacturer: "unknown",
                 session_id: session_id,

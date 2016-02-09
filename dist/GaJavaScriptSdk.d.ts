@@ -303,13 +303,13 @@ declare module GA {
          */
         private user;
         /**
-         * The current sessison of the playing user
+         * The current session of the playing user
          *
          * @type {string}
          */
         private sessionId;
         /**
-         * The current sessison number of the playing user
+         * The current session number of the playing user
          *
          * @type {number}
          */
@@ -359,6 +359,7 @@ declare module GA {
          * @param secretKey     secret key used to auth an message
          * @param build         The build version of your application
          * @param user          The user object User.user_id
+         * @param sessionNum    Number of current user's session
          */
         init(gameKey: string, secretKey: string, build: string, user: User, sessionNum: number): GameAnalytics;
         /**
